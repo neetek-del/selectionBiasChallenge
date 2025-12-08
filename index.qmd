@@ -527,7 +527,7 @@ from step2_create_stipple import create_stipple
 stipple_pattern, _ = create_stipple(gray_image, percentage=0.08)
 ```
 
-# Step 3 (optional)
+# Step 3 
 ```{python}
 from step3_create_tonal import create_tonal
 tonal_image, average_tones, tonal_stats = create_tonal(gray_image, 16, 12, return_full_image=True)
@@ -628,7 +628,7 @@ def create_statistics_meme(original_img, stipple_img, block_letter_img, masked_s
     """
     Assemble all panels into a four-panel statistics meme.
     """
-    fig, axes = plt.subplots(1, 4, figsize=(16, 4), dpi=dpi)
+    fig, axes = plt.subplots(1, 4, figsize=(8, 3), dpi=dpi)
     fig.patch.set_facecolor(background_color)
 
     panels = [
@@ -671,7 +671,7 @@ This four-panel meme is designed as a direct visual metaphor to illustrate the s
  
  **Reality (Original Image):** This represents the true population or the complete data structure we are trying to study. Since it is the original image, it contains $100\%$ of the information and is free from error or sampling effects.
  
- **Your Model (Stippled Image):** This panel represents the process of data collection or sampling. The stippling algorithm converts the continuous tones of the image into discrete dots (data points). While the pattern retains the overall visual information, it is only a sample of the pixels, analogous to collecting data points (observations) from a population. This is the dataset available to the statistician.
+ **Model (Stippled Image):** This panel represents the process of data collection or sampling. The stippling algorithm converts the continuous tones of the image into discrete dots (data points). While the pattern retains the overall visual information, it is only a sample of the pixels, analogous to collecting data points (observations) from a population. This is the dataset available to the statistician.
  
  **Selection Bias (Block Letter "S" Mask):** This is the crucial step. The bold letter "S" represents a systematic, non-random pattern of missing data (the "Selection" in selection bias). In real-world statistics, this pattern might be caused by factors like survey non-response from a specific demographic or technical limitations that systematically exclude certain types of observations.
  
