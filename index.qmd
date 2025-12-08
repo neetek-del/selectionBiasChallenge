@@ -395,7 +395,7 @@ print(f"  - Use mid_tone_center around {tonal_stats['mean']:.2f} to emphasize av
 # )
 ```
 
-## Your Final Submission
+## My Final Submission
 
 
 ** FILE 1 — step4_create_block_letter.py (unchanged from starter file which is the same as the one in the repository)
