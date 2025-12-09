@@ -771,20 +771,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-This version:
-1. Imports the function from `step5_create_masked.py`
-2. Prints statistics before and after masking
-3. Shows data loss percentage
-4. Displays the masked image
 
-The print statements show:
-- Total pixels and stipple coverage before masking
-- Remaining stipples and data loss after masking
-- A warning about the selection bias effect
-
-Make sure `step5_create_masked.py` exists in your directory with the `create_masked_stipple` function.
-
-```
 
 # Step 6
 ```{python}
