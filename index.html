@@ -358,8 +358,8 @@ Tone range: [0.072, 0.945]</code></pre>
 </div>
 <p><strong>Your code should go in a file called <code>create_meme.py</code>.</strong> Once you’ve written it, you’ll use it like this:</p>
 </section>
-<section id="your-final-submission" class="level2">
-<h2 class="anchored" data-anchor-id="your-final-submission">Your Final Submission</h2>
+<section id="my-final-submission" class="level2">
+<h2 class="anchored" data-anchor-id="my-final-submission">My Final Submission</h2>
 <p>** FILE 1 — step4_create_block_letter.py (unchanged from starter file which is the same as the one in the repository)</p>
 <p>** FILE 2 — step5_create_masked.py (unchanged from starter file which is the same as the one in the repository)</p>
 <p>** FILE 3 — create_meme.py</p>
@@ -367,7 +367,7 @@ Tone range: [0.072, 0.945]</code></pre>
 </section>
 <section id="step-1" class="level1">
 <h1>Step 1</h1>
-<div id="69232350" class="cell" data-execution_count="10">
+<div id="2b44ba3b" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>Resized image from (800, 800) to (512, 512) for processing
 Final image shape: (512, 512) (should be 2D for grayscale)</code></pre>
@@ -376,7 +376,7 @@ Final image shape: (512, 512) (should be 2D for grayscale)</code></pre>
 </section>
 <section id="step-2" class="level1">
 <h1>Step 2</h1>
-<div id="a4642fa2" class="cell" data-execution_count="11">
+<div id="4d71cbac" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>Importance map computed
 Generating blue noise stippling pattern...
@@ -387,9 +387,9 @@ Number of background points (1.0 values): 241173</code></pre>
 </div>
 </div>
 </section>
-<section id="step-3-optional" class="level1">
-<h1>Step 3 (optional)</h1>
-<div id="a4c0d143" class="cell" data-execution_count="12">
+<section id="step-3" class="level1">
+<h1>Step 3</h1>
+<div id="901873cb" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>Created tonal analysis: grid 16×12
 Tonal statistics: mean=0.277, std=0.120
@@ -399,7 +399,7 @@ Tone range: [0.043, 0.647]</code></pre>
 </section>
 <section id="step-4" class="level1">
 <h1>Step 4</h1>
-<div id="611a7013" class="cell" data-execution_count="13">
+<div id="0a803800" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -411,7 +411,7 @@ Tone range: [0.043, 0.647]</code></pre>
 </section>
 <section id="step-5" class="level1">
 <h1>Step 5</h1>
-<div id="deab4037" class="cell" data-execution_count="14">
+<div id="3de67166" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -423,11 +423,11 @@ Tone range: [0.043, 0.647]</code></pre>
 </section>
 <section id="step-6" class="level1">
 <h1>Step 6</h1>
-<div id="f38c48d5" class="cell" data-execution_count="15">
+<div id="1f67147c" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-16-output-1.png" width="2354" height="614" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-16-output-1.png" width="1185" height="345" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -440,7 +440,7 @@ Tone range: [0.043, 0.647]</code></pre>
 <p><strong>Key Components of the Meme</strong></p>
 <p>The image workflow mimics the process of moving from an objective reality to a biased statistical estimate:</p>
 <p><strong>Reality (Original Image):</strong> This represents the true population or the complete data structure we are trying to study. Since it is the original image, it contains <span class="math inline">\(100\%\)</span> of the information and is free from error or sampling effects.</p>
-<p><strong>Your Model (Stippled Image):</strong> This panel represents the process of data collection or sampling. The stippling algorithm converts the continuous tones of the image into discrete dots (data points). While the pattern retains the overall visual information, it is only a sample of the pixels, analogous to collecting data points (observations) from a population. This is the dataset available to the statistician.</p>
+<p><strong>Model (Stippled Image):</strong> This panel represents the process of data collection or sampling. The stippling algorithm converts the continuous tones of the image into discrete dots (data points). While the pattern retains the overall visual information, it is only a sample of the pixels, analogous to collecting data points (observations) from a population. This is the dataset available to the statistician.</p>
 <p><strong>Selection Bias (Block Letter “S” Mask):</strong> This is the crucial step. The bold letter “S” represents a systematic, non-random pattern of missing data (the “Selection” in selection bias). In real-world statistics, this pattern might be caused by factors like survey non-response from a specific demographic or technical limitations that systematically exclude certain types of observations.</p>
 <p><strong>Estimate (Masked Stippled Image):</strong> This panel shows the final dataset after the selection bias is applied. The “S”-shaped missing patch severely distorts the visual information and the underlying pattern of the stippled image. This visually demonstrates the outcome of selection bias: the conclusion or estimate drawn from the remaining data is biased and no longer accurately reflects the original Reality.</p>
 <section id="complete-checklist" class="level3">

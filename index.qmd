@@ -517,45 +517,116 @@ def create_statistics_meme(
 # Step 1
 ```{python}
 from step1_prepare_image import prepare_image
+# Assume 'ImageNeetekKumar.jpg' is in your directory
 gray_image = prepare_image("ImageNeetekKumar.jpg", max_size=512)
 h, w = gray_image.shape
+
+# Display for Step 1
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(6.5, 5))
+ax.imshow(gray_image, cmap='gray', vmin=0, vmax=1)
+ax.axis('off')
+ax.set_title('Step 1: Prepared Image (Reality)', fontsize=14, fontweight='bold', pad=10)
+plt.tight_layout()
+plt.show()
 ```
 
 # Step 2
 ```{python}
 from step2_create_stipple import create_stipple
-stipple_pattern, _ = create_stipple(gray_image, percentage=0.08)
+# Use default parameters for stippling
+stipple_pattern, samples = create_stipple(gray_image, percentage=0.08)
+
+# Display for Step 2
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(6.5, 5))
+ax.imshow(stipple_pattern, cmap='gray', vmin=0, vmax=1)
+ax.axis('off')
+ax.set_title('Step 2: Stippled Image (Your Model)', fontsize=14, fontweight='bold', pad=10)
+plt.tight_layout()
+plt.show()
 ```
 
 # Step 3 
 ```{python}
 from step3_create_tonal import create_tonal
-tonal_image, average_tones, tonal_stats = create_tonal(gray_image, 16, 12, return_full_image=True)
+import matplotlib.pyplot as plt
+
+# Create tonal analysis
+grid_rows = 16
+grid_cols = 12
+tonal_image, average_tones, tonal_stats = create_tonal(
+    gray_image,
+    grid_rows=grid_rows,
+    grid_cols=grid_cols,
+    return_full_image=True
+)
+
+# Display the tonal image
+fig, ax = plt.subplots(figsize=(6.5, 5))
+ax.imshow(tonal_image, cmap='gray', vmin=0, vmax=1)
+ax.axis('off')
+ax.set_title('Step 3: Box-Averaged Tonal Analysis', fontsize=14, fontweight='bold', pad=10)
+
+# Calculate grid cell dimensions for text placement
+h_img, w_img = gray_image.shape
+section_h = h_img / grid_rows
+section_w = w_img / grid_cols
+
+# Add text annotations showing tone values (2 decimals)
+for i in range(grid_rows):
+    for j in range(grid_cols):
+        tone = average_tones[i, j]
+        y_center = (i + 0.5) * section_h
+        x_center = (j + 0.5) * section_w
+        text_color = 'white' if tone < 0.5 else 'black'
+        ax.text(x_center, y_center, f'{tone:.2f}', 
+                ha='center', va='center', 
+                color=text_color, fontsize=6, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+
+# Print key statistics for parameter tuning
+print(f"\n📊 Tonal Statistics for Parameter Tuning:")
+print(f"  Mean brightness: {tonal_stats['mean']:.3f}")
+print(f"  Standard deviation: {tonal_stats['std']:.3f}")
+print(f"  Brightness range: [{tonal_stats['min']:.3f}, {tonal_stats['max']:.3f}]")
+print(f"\n💡 Tuning Tips:")
+print(f"  - If mean < 0.4: Image is dark, consider lowering extreme_threshold_low")
+print(f"  - If mean > 0.6: Image is light, consider raising extreme_threshold_high")
+print(f"  - If std > 0.2: High contrast, may need stronger extreme_downweight")
+print(f"  - Use mid_tone_center around {tonal_stats['mean']:.2f} to emphasize average tones")
 ```
 
 # Step 4
 ```{python}
-from PIL import Image, ImageDraw, ImageFont
 import numpy as np
+from PIL import Image, ImageDraw, ImageFont
 
-def create_block_letter_s(height, width, letter="S", font_size_ratio=0.9):
+def create_block_letter_s(height: int,
+                          width: int,
+                          letter: str = "S",
+                          font_size_ratio: float = 0.9) -> np.ndarray:
     """
-    Creates a grayscale block letter mask (black letter on white background).
+    Creates a grayscale block letter mask (black letter on white background)
+    of the specified dimensions, representing the systematic missing data pattern.
     """
-    # Create white background
+
     img = Image.new("L", (width, height), color=255)
     draw = ImageDraw.Draw(img)
 
-    # Try common font paths
+    # List of common font paths for cross-platform compatibility
     font_paths = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",  # Linux
-        "/Library/Fonts/Arial Bold.ttf",                           # Mac
-        "C:/Windows/Fonts/arialbd.ttf"                             # Windows
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/Library/Fonts/Arial Bold.ttf",
+        "C:/Windows/Fonts/arialbd.ttf"
     ]
 
     font = None
     for fp in font_paths:
         try:
+            # Load a bold font, scaled based on the minimum dimension
             font = ImageFont.truetype(fp, int(min(height, width) * font_size_ratio))
             break
         except:
@@ -564,31 +635,21 @@ def create_block_letter_s(height, width, letter="S", font_size_ratio=0.9):
     if font is None:
         font = ImageFont.load_default()
 
-    # Calculate text position to center it
     text = letter.upper()
+    # Calculate text position to center it
     text_bbox = draw.textbbox((0, 0), text, font=font)
     text_w = text_bbox[2] - text_bbox[0]
     text_h = text_bbox[3] - text_bbox[1]
+
     pos_x = (width - text_w) // 2
     pos_y = (height - text_h) // 2
 
+    # Draw the letter in black (fill=0) on the white background
     draw.text((pos_x, pos_y), text, fill=0, font=font)
 
-    # Convert to numpy array normalized to [0,1]
+    # Convert to a NumPy array normalized to [0, 1] (0.0=black, 1.0=white)
     mask = np.array(img).astype(float) / 255.0
     return mask
-
-# Now create the block letter mask
-block_letter = create_block_letter_s(h, w, letter="S")
-
-# Display
-import matplotlib.pyplot as plt
-fig, ax = plt.subplots(figsize=(6.5, 5))
-ax.imshow(block_letter, cmap='gray', vmin=0, vmax=1)
-ax.axis('off')
-ax.set_title('Step 4: Block Letter Mask (S)', fontsize=14, fontweight='bold', pad=10)
-plt.tight_layout()
-plt.show()
 
 ```
 
@@ -596,39 +657,43 @@ plt.show()
 ```{python}
 import numpy as np
 
-def create_masked_stipple(stipple_img, mask_img, threshold=0.5):
+def create_masked_stipple(stipple_img: np.ndarray,
+                          mask_img: np.ndarray,
+                          threshold: float = 0.5) -> np.ndarray:
     """
-    Apply a block letter mask to the stippled image.
-    Pixels under the threshold in the mask are removed (set to white).
+    Applies a block letter mask (representing systematic missing data) 
+    to the stippled image (representing sampled data).
+    
+    Where the mask is dark (below threshold), the stipples are removed (set to white/1.0).
     """
+
+    # Use np.where to conditionally replace pixel values.
+    # If mask_img < threshold (i.e., it's part of the black 'S'), set the output pixel to 1.0 (white/missing data).
+    # Otherwise, keep the original stipple_img pixel value.
     masked = np.where(mask_img < threshold, 1.0, stipple_img)
     return masked
-
-# Apply mask
-masked_stipple = create_masked_stipple(stipple_pattern, block_letter, threshold=0.5)
-
-# Display masked stippled image
-import matplotlib.pyplot as plt
-fig, ax = plt.subplots(figsize=(6.5, 5))
-ax.imshow(masked_stipple, cmap='gray', vmin=0, vmax=1)
-ax.axis('off')
-ax.set_title('Step 5: Masked Stipple (Selection Bias Applied)', fontsize=14, fontweight='bold', pad=10)
-plt.tight_layout()
-plt.show()
 
 ```
 
 # Step 6
 ```{python}
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
-def create_statistics_meme(original_img, stipple_img, block_letter_img, masked_stipple_img,
-                           output_path, dpi=150, background_color="white"):
+def create_statistics_meme(
+        original_img: np.ndarray,
+        stipple_img: np.ndarray,
+        block_letter_img: np.ndarray,
+        masked_stipple_img: np.ndarray,
+        output_path: str,
+        dpi: int = 150,
+        background_color: str = "white") -> None:
     """
-    Assemble all panels into a four-panel statistics meme.
+    Assembles the four processed images into a single 1x4 panel statistics meme
+    and saves the result to the specified output path.
     """
-    fig, axes = plt.subplots(1, 4, figsize=(8, 3), dpi=dpi)
+
+    fig, axes = plt.subplots(1, 4, figsize=(16, 4), dpi=dpi)
     fig.patch.set_facecolor(background_color)
 
     panels = [
@@ -641,21 +706,22 @@ def create_statistics_meme(original_img, stipple_img, block_letter_img, masked_s
     for ax, (title, img) in zip(axes, panels):
         ax.imshow(img, cmap="gray", vmin=0, vmax=1)
         ax.set_title(title, fontsize=14, fontweight="bold", pad=10)
-        ax.axis("off")
+        ax.axis("off") # Remove axis ticks and labels
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=dpi, bbox_inches="tight", facecolor=background_color)
-    plt.show()
     plt.close()
 
-# Create the final meme
-create_statistics_meme(
-    gray_image,
-    stipple_pattern,
-    block_letter,
-    masked_stipple,
-    "my_statistics_meme.png"
-)
+    # Display the final image for the Quarto output
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+img = mpimg.imread("my_statistics_meme.png")
+fig, ax = plt.subplots(figsize=(16, 4))
+ax.imshow(img)
+ax.axis('off')
+plt.tight_layout()
+plt.show()
 
 ```
 
