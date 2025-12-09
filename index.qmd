@@ -694,15 +694,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-This adds:
-- Image dimensions (height, width, total pixels)
-- Mask statistics (black letter area vs white background)
-- Percentage of the image that will be masked
-- A note explaining what the pattern represents
 
-The print statements highlight the selection bias pattern and its impact before it's applied in Step 5.
-
-```
 
 # Step 5
 
