@@ -15,6 +15,7 @@ execute:
 
 **Your Task:** Create a four-panel statistics meme demonstrating selection bias. You'll write three Python functions yourself to complete the workflow, then assemble them into a professional meme.
 
+
 **Deliverables:**
 
 1. Three Python functions you write yourself:
