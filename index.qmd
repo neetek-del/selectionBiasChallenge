@@ -600,7 +600,6 @@ print(f"  - Use mid_tone_center around {tonal_stats['mean']:.2f} to emphasize av
 ```
 
 # Step 4
-
 ```{python}
 #| label: step4-block-letter
 #| echo: false
@@ -697,8 +696,6 @@ plt.show()
 
 
 # Step 5
-
-
 ```{python}
 #| label: step5-masked
 #| echo: false
