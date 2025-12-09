@@ -796,7 +796,7 @@ def create_statistics_meme(
     and saves the result to the specified output path.
     """
 
-    fig, axes = plt.subplots(1, 4, figsize=(16, 4), dpi=dpi)
+    fig, axes = plt.subplots(1, 4, figsize=(8, 4), dpi=dpi)
     fig.patch.set_facecolor(background_color)
 
     panels = [
