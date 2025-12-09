@@ -367,16 +367,23 @@ Tone range: [0.072, 0.945]</code></pre>
 </section>
 <section id="step-1" class="level1">
 <h1>Step 1</h1>
-<div id="2b44ba3b" class="cell" data-execution_count="10">
+<div id="60e632ec" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>Resized image from (800, 800) to (512, 512) for processing
 Final image shape: (512, 512) (should be 2D for grayscale)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-11-output-2.png" width="442" height="470" class="figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="step-2" class="level1">
 <h1>Step 2</h1>
-<div id="4d71cbac" class="cell" data-execution_count="11">
+<div id="7a44dd8a" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>Importance map computed
 Generating blue noise stippling pattern...
@@ -385,49 +392,58 @@ Stipple pattern shape: (512, 512)
 Number of stippled points (0.0 values): 20971
 Number of background points (1.0 values): 241173</code></pre>
 </div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-12-output-2.png" width="442" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="step-3" class="level1">
 <h1>Step 3</h1>
-<div id="901873cb" class="cell" data-execution_count="12">
+<div id="fbfd9692" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>Created tonal analysis: grid 16×12
 Tonal statistics: mean=0.277, std=0.120
 Tone range: [0.043, 0.647]</code></pre>
 </div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-13-output-2.png" width="442" height="470" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 Tonal Statistics for Parameter Tuning:
+  Mean brightness: 0.277
+  Standard deviation: 0.120
+  Brightness range: [0.043, 0.647]
+
+💡 Tuning Tips:
+  - If mean &lt; 0.4: Image is dark, consider lowering extreme_threshold_low
+  - If mean &gt; 0.6: Image is light, consider raising extreme_threshold_high
+  - If std &gt; 0.2: High contrast, may need stronger extreme_downweight
+  - Use mid_tone_center around 0.28 to emphasize average tones</code></pre>
+</div>
 </div>
 </section>
 <section id="step-4" class="level1">
 <h1>Step 4</h1>
-<div id="0a803800" class="cell" data-execution_count="13">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/cell-14-output-1.png" width="442" height="470" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
 <section id="step-5" class="level1">
 <h1>Step 5</h1>
-<div id="3de67166" class="cell" data-execution_count="14">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/cell-15-output-1.png" width="521" height="470" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
 <section id="step-6" class="level1">
 <h1>Step 6</h1>
-<div id="1f67147c" class="cell" data-execution_count="15">
+<div id="74b882eb" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-16-output-1.png" width="1185" height="345" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-16-output-1.png" width="1243" height="374" class="figure-img"></p>
 </figure>
 </div>
 </div>
