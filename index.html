@@ -36,35 +36,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -367,7 +338,7 @@ Tone range: [0.072, 0.945]</code></pre>
 </section>
 <section id="step-1" class="level1">
 <h1>Step 1</h1>
-<div id="53974ef2" class="cell" data-execution_count="10">
+<div id="abf60593" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>Resized image from (800, 800) to (512, 512) for processing
 Final image shape: (512, 512) (should be 2D for grayscale)</code></pre>
@@ -383,7 +354,7 @@ Final image shape: (512, 512) (should be 2D for grayscale)</code></pre>
 </section>
 <section id="step-2" class="level1">
 <h1>Step 2</h1>
-<div id="5d659174" class="cell" data-execution_count="11">
+<div id="82926104" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>Importance map computed
 Generating blue noise stippling pattern...
@@ -403,7 +374,7 @@ Number of background points (1.0 values): 241173</code></pre>
 </section>
 <section id="step-3" class="level1">
 <h1>Step 3</h1>
-<div id="2aa98d67" class="cell" data-execution_count="12">
+<div id="53151f98" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>Created tonal analysis: grid 16×12
 Tonal statistics: mean=0.277, std=0.120
@@ -439,7 +410,7 @@ Tone range: [0.043, 0.647]</code></pre>
 </section>
 <section id="step-6" class="level1">
 <h1>Step 6</h1>
-<div id="278fb05a" class="cell" data-execution_count="15">
+<div id="b631865a" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -451,14 +422,7 @@ Tone range: [0.043, 0.647]</code></pre>
 </section>
 <section id="elaborate-on-the-meme-and-the-selection-bias." class="level1">
 <h1>Elaborate on the meme and the selection bias.</h1>
-<p>This four-panel meme is designed as a direct visual metaphor to illustrate the statistical concept of Selection Bias, which occurs when the sample data collected is not representative of the true population.</p>
-<p>Elaborate Explanation: Visualizing Selection BiasThis four-panel meme is designed as a direct visual metaphor to illustrate the statistical concept of Selection Bias, which occurs when the sample data collected is not representative of the true population.</p>
-<p><strong>Key Components of the Meme</strong></p>
-<p>The image workflow mimics the process of moving from an objective reality to a biased statistical estimate:</p>
-<p><strong>Reality (Original Image):</strong> This represents the true population or the complete data structure we are trying to study. Since it is the original image, it contains <span class="math inline">\(100\%\)</span> of the information and is free from error or sampling effects.</p>
-<p><strong>Model (Stippled Image):</strong> This panel represents the process of data collection or sampling. The stippling algorithm converts the continuous tones of the image into discrete dots (data points). While the pattern retains the overall visual information, it is only a sample of the pixels, analogous to collecting data points (observations) from a population. This is the dataset available to the statistician.</p>
-<p><strong>Selection Bias (Block Letter “S” Mask):</strong> This is the crucial step. The bold letter “S” represents a systematic, non-random pattern of missing data (the “Selection” in selection bias). In real-world statistics, this pattern might be caused by factors like survey non-response from a specific demographic or technical limitations that systematically exclude certain types of observations.</p>
-<p><strong>Estimate (Masked Stippled Image):</strong> This panel shows the final dataset after the selection bias is applied. The “S”-shaped missing patch severely distorts the visual information and the underlying pattern of the stippled image. This visually demonstrates the outcome of selection bias: the conclusion or estimate drawn from the remaining data is biased and no longer accurately reflects the original Reality.</p>
+<p>This meme demonstrates selection bias by showing how systematic missing data patterns distort our understanding of reality. The original image represents Reality (the true population). The stippled version represents your Model (the collected data points, or sample). The application of a bold, block-letter “S” acts as the Selection Bias, systematically removing data points in a non-random pattern. This visually mirrors how survey non-response or technical limitations create biased samples in statistics. The final image (the Estimate) shows the outcome: the conclusion drawn from the remaining data is severely distorted and no longer accurately reflects the original reality, leading to incorrect statistical conclusions.</p>
 <section id="complete-checklist" class="level3">
 <h3 class="anchored" data-anchor-id="complete-checklist">Complete Checklist</h3>
 <p>To complete this challenge, you must:</p>

@@ -600,78 +600,197 @@ print(f"  - Use mid_tone_center around {tonal_stats['mean']:.2f} to emphasize av
 ```
 
 # Step 4
+
 ```{python}
-import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+#| label: step4-block-letter
+#| echo: false
+#| fig-cap: "Block letter S representing selection bias"
 
-def create_block_letter_s(height: int,
-                          width: int,
-                          letter: str = "S",
-                          font_size_ratio: float = 0.9) -> np.ndarray:
-    """
-    Creates a grayscale block letter mask (black letter on white background)
-    of the specified dimensions, representing the systematic missing data pattern.
-    """
+# Import the function from step4_create_block_letter.py (or define inline)
+try:
+    from step4_create_block_letter import create_block_letter_s
+except ImportError:
+    # Define the function if the file doesn't exist
+    import numpy as np
+    from PIL import Image, ImageDraw, ImageFont
+    
+    def create_block_letter_s(height: int,
+                              width: int,
+                              letter: str = "S",
+                              font_size_ratio: float = 0.9) -> np.ndarray:
+        """
+        Creates a grayscale block letter mask (black letter on white background)
+        of the specified dimensions, representing the systematic missing data pattern.
+        """
+        img = Image.new("L", (width, height), color=255)
+        draw = ImageDraw.Draw(img)
+        
+        font_paths = [
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+            "/Library/Fonts/Arial Bold.ttf",
+            "C:/Windows/Fonts/arialbd.ttf"
+        ]
+        
+        font = None
+        for fp in font_paths:
+            try:
+                font = ImageFont.truetype(fp, int(min(height, width) * font_size_ratio))
+                break
+            except:
+                pass
+        
+        if font is None:
+            font = ImageFont.load_default()
+        
+        text = letter.upper()
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_w = text_bbox[2] - text_bbox[0]
+        text_h = text_bbox[3] - text_bbox[1]
+        
+        pos_x = (width - text_w) // 2
+        pos_y = (height - text_h) // 2
+        
+        draw.text((pos_x, pos_y), text, fill=0, font=font)
+        mask = np.array(img).astype(float) / 255.0
+        return mask
 
-    img = Image.new("L", (width, height), color=255)
-    draw = ImageDraw.Draw(img)
+# Get image dimensions
+h, w = gray_image.shape
 
-    # List of common font paths for cross-platform compatibility
-    font_paths = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/Library/Fonts/Arial Bold.ttf",
-        "C:/Windows/Fonts/arialbd.ttf"
-    ]
+print("🎨 Step 4: Creating Selection Bias Pattern")
+print("=" * 50)
+print(f"📐 Image Dimensions:")
+print(f"   Height: {h} pixels")
+print(f"   Width: {w} pixels")
+print(f"   Total pixels: {h * w:,}")
+print()
 
-    font = None
-    for fp in font_paths:
-        try:
-            # Load a bold font, scaled based on the minimum dimension
-            font = ImageFont.truetype(fp, int(min(height, width) * font_size_ratio))
-            break
-        except:
-            pass
+# Create block letter mask
+block_letter = create_block_letter_s(h, w, letter="S")
 
-    if font is None:
-        font = ImageFont.load_default()
+# Calculate mask statistics
+mask_pixels = np.sum(block_letter < 0.5)  # Count black pixels (the letter)
+total_pixels = block_letter.size
+mask_percentage = (mask_pixels / total_pixels) * 100
+white_pixels = total_pixels - mask_pixels
+white_percentage = (white_pixels / total_pixels) * 100
 
-    text = letter.upper()
-    # Calculate text position to center it
-    text_bbox = draw.textbbox((0, 0), text, font=font)
-    text_w = text_bbox[2] - text_bbox[0]
-    text_h = text_bbox[3] - text_bbox[1]
+print(f"📊 Block Letter Mask Statistics:")
+print(f"   Mask area (black 'S'): {mask_pixels:,} pixels ({mask_percentage:.2f}%)")
+print(f"   Background (white): {white_pixels:,} pixels ({white_percentage:.2f}%)")
+print()
+print(f"⚠️  This 'S' pattern represents the systematic missing data!")
+print(f"   When applied, it will remove {mask_percentage:.2f}% of the image area.")
+print("=" * 50)
+print()
 
-    pos_x = (width - text_w) // 2
-    pos_y = (height - text_h) // 2
+# Display
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(6.5, 5))
+ax.imshow(block_letter, cmap='gray', vmin=0, vmax=1)
+ax.axis('off')
+ax.set_title('Step 4: Block Letter Mask (S)', fontsize=14, fontweight='bold', pad=10)
+plt.tight_layout()
+plt.show()
+```
 
-    # Draw the letter in black (fill=0) on the white background
-    draw.text((pos_x, pos_y), text, fill=0, font=font)
+This adds:
+- Image dimensions (height, width, total pixels)
+- Mask statistics (black letter area vs white background)
+- Percentage of the image that will be masked
+- A note explaining what the pattern represents
 
-    # Convert to a NumPy array normalized to [0, 1] (0.0=black, 1.0=white)
-    mask = np.array(img).astype(float) / 255.0
-    return mask
+The print statements highlight the selection bias pattern and its impact before it's applied in Step 5.
 
 ```
 
 # Step 5
+
+
 ```{python}
+#| label: step5-masked
+#| echo: false
+#| fig-cap: "Masked stippled image showing selection bias effect"
+
 import numpy as np
+import matplotlib.pyplot as plt
 
-def create_masked_stipple(stipple_img: np.ndarray,
-                          mask_img: np.ndarray,
-                          threshold: float = 0.5) -> np.ndarray:
-    """
-    Applies a block letter mask (representing systematic missing data) 
-    to the stippled image (representing sampled data).
-    
-    Where the mask is dark (below threshold), the stipples are removed (set to white/1.0).
-    """
+# Define the function inline (or import if step5_create_masked.py exists)
+try:
+    from step5_create_masked import create_masked_stipple
+except ImportError:
+    # Define the function if the file doesn't exist
+    def create_masked_stipple(stipple_img: np.ndarray,
+                              mask_img: np.ndarray,
+                              threshold: float = 0.5) -> np.ndarray:
+        """
+        Applies a block letter mask (representing systematic missing data) 
+        to the stippled image (representing sampled data).
+        
+        Where the mask is dark (below threshold), the stipples are removed (set to white/1.0).
+        """
+        masked = np.where(mask_img < threshold, 1.0, stipple_img)
+        return masked
 
-    # Use np.where to conditionally replace pixel values.
-    # If mask_img < threshold (i.e., it's part of the black 'S'), set the output pixel to 1.0 (white/missing data).
-    # Otherwise, keep the original stipple_img pixel value.
-    masked = np.where(mask_img < threshold, 1.0, stipple_img)
-    return masked
+# Apply the block letter mask to the stippled image
+print("🔍 Step 5: Applying Selection Bias Mask")
+print("=" * 50)
+
+# Calculate statistics before masking
+stipple_pixels = np.sum(stipple_pattern < 0.5)  # Count black pixels (stipples)
+total_pixels = stipple_pattern.size
+stipple_percentage = (stipple_pixels / total_pixels) * 100
+
+print(f"📊 Stippled Image Statistics:")
+print(f"   Total pixels: {total_pixels:,}")
+print(f"   Stipple points (black pixels): {stipple_pixels:,}")
+print(f"   Stipple coverage: {stipple_percentage:.2f}%")
+print()
+
+# Create masked stippled image
+masked_stipple = create_masked_stipple(
+    stipple_pattern,
+    block_letter,
+    threshold=0.5  # Pixels below 0.5 are considered part of the mask
+)
+
+# Calculate statistics after masking
+masked_pixels = np.sum(masked_stipple < 0.5)  # Count remaining stipples
+masked_percentage = (masked_pixels / total_pixels) * 100
+removed_pixels = stipple_pixels - masked_pixels
+removed_percentage = (removed_pixels / stipple_pixels) * 100
+
+print(f"📊 Masked Image Statistics:")
+print(f"   Remaining stipple points: {masked_pixels:,}")
+print(f"   Remaining coverage: {masked_percentage:.2f}%")
+print(f"   Removed stipple points: {removed_pixels:,}")
+print(f"   Data loss: {removed_percentage:.2f}%")
+print()
+print(f"⚠️  Selection bias has removed {removed_percentage:.1f}% of the data points!")
+print("=" * 50)
+print()
+
+# Display the masked stippled image
+fig, ax = plt.subplots(figsize=(6.5, 5))
+ax.imshow(masked_stipple, cmap='gray', vmin=0, vmax=1)
+ax.axis('off')
+ax.set_title('Step 5: Masked Stippled Image (Estimate)', fontsize=14, fontweight='bold', pad=10)
+plt.tight_layout()
+plt.show()
+```
+
+This version:
+1. Imports the function from `step5_create_masked.py`
+2. Prints statistics before and after masking
+3. Shows data loss percentage
+4. Displays the masked image
+
+The print statements show:
+- Total pixels and stipple coverage before masking
+- Remaining stipples and data loss after masking
+- A warning about the selection bias effect
+
+Make sure `step5_create_masked.py` exists in your directory with the `create_masked_stipple` function.
 
 ```
 
@@ -727,8 +846,21 @@ plt.show()
 
 # Elaborate on the meme and the selection bias.
 
-This meme demonstrates selection bias by showing how systematic missing data patterns distort our understanding of reality.
-The original image represents Reality (the true population). The stippled version represents your Model (the collected data points, or sample). The application of a bold, block-letter "S" acts as the Selection Bias, systematically removing data points in a non-random pattern. This visually mirrors how survey non-response or technical limitations create biased samples in statistics. The final image (the Estimate) shows the outcome: the conclusion drawn from the remaining data is severely distorted and no longer accurately reflects the original reality, leading to incorrect statistical conclusions.
+This four-panel meme is designed as a direct visual metaphor to illustrate the statistical concept of Selection Bias, which occurs when the sample data collected is not representative of the true population.
+
+ Elaborate Explanation: Visualizing Selection BiasThis four-panel meme is designed as a direct visual metaphor to illustrate the statistical concept of Selection Bias, which occurs when the sample data collected is not representative of the true population.
+ 
+ **Key Components of the Meme**
+ 
+ The image workflow mimics the process of moving from an objective reality to a biased statistical estimate:
+ 
+ **Reality (Original Image):** This represents the true population or the complete data structure we are trying to study. Since it is the original image, it contains $100\%$ of the information and is free from error or sampling effects.
+ 
+ **Model (Stippled Image):** This panel represents the process of data collection or sampling. The stippling algorithm converts the continuous tones of the image into discrete dots (data points). While the pattern retains the overall visual information, it is only a sample of the pixels, analogous to collecting data points (observations) from a population. This is the dataset available to the statistician.
+ 
+ **Selection Bias (Block Letter "S" Mask):** This is the crucial step. The bold letter "S" represents a systematic, non-random pattern of missing data (the "Selection" in selection bias). In real-world statistics, this pattern might be caused by factors like survey non-response from a specific demographic or technical limitations that systematically exclude certain types of observations.
+ 
+ **Estimate (Masked Stippled Image):** This panel shows the final dataset after the selection bias is applied. The "S"-shaped missing patch severely distorts the visual information and the underlying pattern of the stippled image. This visually demonstrates the outcome of selection bias: the conclusion or estimate drawn from the remaining data is biased and no longer accurately reflects the original Reality.
 
 
 
